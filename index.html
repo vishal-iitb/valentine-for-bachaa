@@ -9,7 +9,7 @@
 body {
   margin:0;
   font-family: Georgia, serif;
-  background:#ffe6eb;
+  background:#fde4ea;
   overflow:hidden;
 }
 
@@ -27,39 +27,42 @@ body {
   text-align:center;
 }
 
-.active { display:flex; }
+.active {
+  display:flex;
+}
 
 p {
-  font-size:18px;
-  line-height:1.8;
+  font-size:20px;
+  line-height:2;
   max-width:600px;
-  white-space:pre-line;
+  white-space:pre-line; /* IMPORTANT for spacing */
 }
 
 h2 {
-  font-size:26px;
+  font-size:28px;
   margin-bottom:20px;
 }
 
 button {
-  padding:12px 26px;
-  font-size:16px;
+  padding:14px 30px;
+  font-size:18px;
   border:none;
-  border-radius:25px;
+  border-radius:30px;
   background:#e6004c;
   color:white;
-  margin:15px;
+  margin-top:25px;
   cursor:pointer;
 }
 
 #noBtn {
   background:#aaa;
   font-size:12px;
+  margin-left:10px;
 }
 
 img {
   width:90%;
-  max-width:280px;
+  max-width:300px;
   border-radius:15px;
   margin-bottom:20px;
 }
@@ -67,9 +70,9 @@ img {
 /* Butterflies & roses */
 .floating {
   position:fixed;
-  font-size:22px;
+  font-size:24px;
   animation: floatUp linear infinite;
-  opacity:0.7;
+  opacity:0.8;
 }
 
 @keyframes floatUp {
@@ -91,8 +94,10 @@ img {
 <div class="page" id="page2">
 <h2>Will you be my Valentine? ❤️</h2>
 <p id="tease"></p>
-<button id="yesBtn" onclick="goPage(3)">YES</button>
-<button id="noBtn" onclick="growYes()">NO</button>
+<div>
+  <button id="yesBtn" onclick="goPage(3)">YES</button>
+  <button id="noBtn" onclick="growYes()">NO</button>
+</div>
 </div>
 
 <!-- PAGE 3 -->
@@ -102,7 +107,7 @@ img {
 </div>
 
 <script>
-/* -------- TYPEWRITER (slow) -------- */
+/* TYPEWRITER (slow & spaced) */
 function typeWriter(text, elementId) {
   let i = 0;
   const el = document.getElementById(elementId);
@@ -114,11 +119,11 @@ function typeWriter(text, elementId) {
     } else {
       clearInterval(timer);
     }
-  }, 120); // slower speed (1/4 of before)
+  }, 150); // slower speed
 }
 
-/* -------- INTRO TEXT -------- */
-const introMsg = 
+/* INTRO TEXT WITH SPACES */
+const introMsg =
 "This is made only for you.\n\n" +
 "Please don’t rush.\n\n" +
 "Sit comfortably.\n\n" +
@@ -127,29 +132,29 @@ const introMsg =
 
 typeWriter(introMsg, "introText");
 
-/* -------- PAGE CONTROL -------- */
+/* PAGE SWITCH */
 function goPage(n) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById("page"+n).classList.add("active");
+  document.getElementById("page" + n).classList.add("active");
 
-  if(n === 3){
+  if (n === 3) {
     const letter =
 "My Bachaa,\n\n" +
 "I will write this letter for you later.\n\n" +
-"This is just a placeholder text for now.\n\n" +
 "You are very special to me.\n\n" +
+"This is made only for you.\n\n" +
 "Forever yours.";
     typeWriter(letter, "letterText");
   }
 }
 
-/* -------- YES NO LOGIC -------- */
-let yesSize = 16;
+/* YES NO LOGIC */
+let yesSize = 18;
 let teaseTexts = [
   "Are you sure?",
   "Think again...",
   "My heart is waiting...",
-  "You can’t escape love"
+  "You can’t escape love 💖"
 ];
 let teaseIndex = 0;
 
@@ -160,19 +165,19 @@ function growYes() {
   teaseIndex = (teaseIndex + 1) % teaseTexts.length;
 }
 
-/* -------- BUTTERFLIES & ROSES -------- */
+/* BUTTERFLIES & ROSES */
 function spawn(symbol) {
   const e = document.createElement("div");
   e.className = "floating";
   e.innerText = symbol;
-  e.style.left = Math.random()*100 + "vw";
-  e.style.animationDuration = (6 + Math.random()*4) + "s";
+  e.style.left = Math.random() * 100 + "vw";
+  e.style.animationDuration = (6 + Math.random() * 4) + "s";
   document.body.appendChild(e);
-  setTimeout(()=>e.remove(),10000);
+  setTimeout(() => e.remove(), 10000);
 }
 
-setInterval(()=>spawn("🦋"), 2000);
-setInterval(()=>spawn("🌹"), 3000);
+setInterval(() => spawn("🦋"), 2000);
+setInterval(() => spawn("🌹"), 3000);
 </script>
 
 </body>
