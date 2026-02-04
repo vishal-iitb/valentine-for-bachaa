@@ -13,9 +13,8 @@ body{
   overflow:hidden;
 }
 
-/* Pages */
+/* Page layout */
 .page{
-  display:none;
   width:100vw;
   height:100vh;
   padding:20px;
@@ -27,14 +26,14 @@ body{
   text-align:center;
 }
 
-.active{
-  display:flex;
-}
-
 p{
   font-size:20px;
   line-height:2;
   white-space:pre-line;
+}
+
+h2{
+  margin-bottom:20px;
 }
 
 button{
@@ -42,7 +41,7 @@ button{
   font-size:18px;
   border:none;
   border-radius:25px;
-  margin-top:25px;
+  margin:10px;
   cursor:pointer;
   background:red;
   color:white;
@@ -52,58 +51,35 @@ button{
   background:gray;
   font-size:12px;
 }
+
+img{
+  width:90%;
+  max-width:300px;
+  border-radius:15px;
+  margin-top:20px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
-<p id="introText"></p>
-<button onclick="goPage(2)">Begin</button>
-</div>
-
-<!-- PAGE 2 -->
-<div class="page" id="page2">
+<!-- VALENTINE PAGE -->
+<div class="page" id="page1">
 <h2>Will you be my Valentine? ❤️</h2>
 <p id="tease"></p>
-<button id="yesBtn" onclick="alert('She said YES ❤️')">YES</button>
-<button id="noBtn" onclick="growYes()">NO</button>
+<div>
+  <button id="yesBtn" onclick="showLetter()">YES</button>
+  <button id="noBtn" onclick="growYes()">NO</button>
+</div>
+</div>
+
+<!-- LOVE LETTER PAGE -->
+<div class="page" id="page2" style="display:none;">
+<img src="pic1.jpg">
+<p id="letterText"></p>
 </div>
 
 <script>
-/* TYPEWRITER */
-function typeWriter(text, elementId){
-  let i = 0;
-  const el = document.getElementById(elementId);
-  el.innerText = "";
-
-  const timer = setInterval(()=>{
-    if(i < text.length){
-      el.innerText += text.charAt(i);
-      i++;
-    } else {
-      clearInterval(timer);
-    }
-  }, 150);
-}
-
-/* INTRO TEXT (WITH SPACES) */
-const introMsg =
-"This is made only for you.\n\n" +
-"Please don’t rush.\n\n" +
-"Sit comfortably.\n\n" +
-"Wear earphones.\n\n" +
-"Tap Begin when you are ready.";
-
-typeWriter(introMsg, "introText");
-
-/* PAGE SWITCH */
-function goPage(n){
-  document.getElementById("page1").classList.remove("active");
-  document.getElementById("page2").classList.add("active");
-}
-
 /* YES NO LOGIC */
 let yesSize = 18;
 let teaseTexts = [
@@ -119,6 +95,34 @@ function growYes(){
   document.getElementById("yesBtn").style.fontSize = yesSize + "px";
   document.getElementById("tease").innerText = teaseTexts[teaseIndex];
   teaseIndex = (teaseIndex + 1) % teaseTexts.length;
+}
+
+/* SHOW LOVE LETTER */
+function showLetter(){
+  document.getElementById("page1").style.display="none";
+  document.getElementById("page2").style.display="flex";
+
+  const letter =
+"My Bachaa,\n\n" +
+"I will write this love letter for you later.\n\n" +
+"You are very special to me.\n\n" +
+"This is made only for you.\n\n" +
+"Forever yours ❤️";
+
+  typeWriter(letter,"letterText");
+}
+
+/* TYPEWRITER */
+function typeWriter(text,id){
+  let i=0;
+  let el=document.getElementById(id);
+  el.innerText="";
+  let timer=setInterval(()=>{
+    if(i<text.length){
+      el.innerText+=text.charAt(i);
+      i++;
+    } else clearInterval(timer);
+  },150);
 }
 </script>
 
