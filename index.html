@@ -10,12 +10,15 @@ body {
   margin:0;
   font-family: Georgia, serif;
   background:#ffe6eb;
+  overflow:hidden;
 }
 
+/* Pages */
 .page {
   display:none;
-  min-height:100vh;
-  padding:20px;
+  width:100vw;
+  height:100vh;
+  padding:30px;
   box-sizing:border-box;
   display:flex;
   flex-direction:column;
@@ -28,22 +31,24 @@ body {
 
 p {
   font-size:18px;
-  line-height:1.6;
+  line-height:1.8;
   max-width:600px;
+  white-space:pre-line;
 }
 
 h2 {
   font-size:26px;
+  margin-bottom:20px;
 }
 
 button {
-  padding:12px 24px;
+  padding:12px 26px;
   font-size:16px;
   border:none;
-  border-radius:20px;
+  border-radius:25px;
   background:#e6004c;
   color:white;
-  margin:10px;
+  margin:15px;
   cursor:pointer;
 }
 
@@ -52,21 +57,24 @@ button {
   font-size:12px;
 }
 
-img, video {
+img {
   width:90%;
-  max-width:320px;
-  border-radius:12px;
-  margin:15px 0;
+  max-width:280px;
+  border-radius:15px;
+  margin-bottom:20px;
 }
 
-.selected {
-  background:gold !important;
-  color:black;
+/* Butterflies & roses */
+.floating {
+  position:fixed;
+  font-size:22px;
+  animation: floatUp linear infinite;
+  opacity:0.7;
 }
 
-.timer {
-  font-size:18px;
-  margin:10px;
+@keyframes floatUp {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
 }
 </style>
 </head>
@@ -91,144 +99,80 @@ img, video {
 <div class="page" id="page3">
 <img src="pic1.jpg">
 <p id="letterText"></p>
-<button onclick="goPage(4)">Next</button>
-</div>
-
-<!-- PAGE 4 -->
-<div class="page" id="page4">
-<h2>Our Story 💕</h2>
-<video src="story.mp4" controls></video>
-<button onclick="goPage(5)">Next</button>
-</div>
-
-<!-- PAGE 5 -->
-<div class="page" id="page5">
-<h2>Listen to Me 🎧</h2>
-<audio src="myvoice.mp3" controls></audio>
-
-<p>Now record something for me 💖</p>
-<div class="timer" id="recordTimer">Not recording</div>
-
-<button onclick="startRecording()">🎤 Start Recording</button>
-<button onclick="stopRecording()">⏹ Stop</button>
-<a id="downloadLink"></a>
-
-<button onclick="goPage(6)">Next</button>
-</div>
-
-<!-- PAGE 6 -->
-<div class="page" id="page6">
-<h2>Choose Our Date 🌹</h2>
-<button onclick="chooseDate(this,'Temple Visit')">Temple Visit</button>
-<button onclick="chooseDate(this,'Candlelight Dinner')">Candlelight Dinner</button>
-<button onclick="chooseDate(this,'Road Trip')">Road Trip</button>
-<button onclick="chooseDate(this,'Movie Date')">Movie Date</button>
-
-<p id="chosenDateText"></p>
-<button onclick="goPage(7)">Final</button>
-</div>
-
-<!-- PAGE 7 -->
-<div class="page" id="page7">
-<h2>For You, Bachaa ❤️</h2>
-<p id="finalText"></p>
 </div>
 
 <script>
-/* INTRO */
-let introMsg = "This is made only for you...\n\nPlease don’t rush.\nSit comfortably.\nWear earphones.\n\nTap Begin when you are ready.";
-typeWriter(introMsg,"introText");
-
-/* YES NO */
-let yesSize = 16;
-let teaseTexts = ["Are you sure? 😏","Think again...","My heart is waiting...","You can’t escape love 💖"];
-let teaseIndex = 0;
-
-function growYes(){
-  yesSize += 6;
-  document.getElementById("yesBtn").style.fontSize = yesSize+"px";
-  document.getElementById("tease").innerText = teaseTexts[teaseIndex];
-  teaseIndex = (teaseIndex+1)%teaseTexts.length;
-}
-
-/* LOVE LETTER */
-let letter = "My Bachaa,\n\nI will write this letter for you later.\nYou are very special to me.\n\nThis is only for you.\n\nForever yours.";
-
-/* PAGE CONTROL */
-function goPage(n){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById("page"+n).classList.add("active");
-
-  if(n===3){
-    typeWriter(letter,"letterText");
-  }
-
-  if(n===7){
-    finalText.innerHTML = 
-      "Our next date will be: <b>"+selectedDate+"</b><br><br>" +
-      "This was made only for you.<br>" +
-      "Thank you for being in my life ❤️";
-  }
-}
-
-/* TYPEWRITER */
-function typeWriter(text,id){
-  let i=0;
-  let el=document.getElementById(id);
-  el.innerText="";
-  let timer=setInterval(()=>{
-    if(i<text.length){
+/* -------- TYPEWRITER (slow) -------- */
+function typeWriter(text, elementId) {
+  let i = 0;
+  const el = document.getElementById(elementId);
+  el.innerText = "";
+  const timer = setInterval(() => {
+    if (i < text.length) {
       el.innerText += text.charAt(i);
       i++;
-    } else clearInterval(timer);
-  },40);
+    } else {
+      clearInterval(timer);
+    }
+  }, 120); // slower speed (1/4 of before)
 }
 
-/* VOICE RECORDING WITH TIMER */
-let mediaRecorder;
-let audioChunks=[];
-let seconds=0;
-let timerInterval;
+/* -------- INTRO TEXT -------- */
+const introMsg = 
+"This is made only for you.\n\n" +
+"Please don’t rush.\n\n" +
+"Sit comfortably.\n\n" +
+"Wear earphones.\n\n" +
+"Tap Begin when you are ready.";
 
-function startRecording(){
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
-    audioChunks=[];
-    seconds=0;
-    recordTimer.innerText="Recording: 0 sec";
+typeWriter(introMsg, "introText");
 
-    timerInterval = setInterval(()=>{
-      seconds++;
-      recordTimer.innerText = "Recording: " + seconds + " sec";
-    },1000);
+/* -------- PAGE CONTROL -------- */
+function goPage(n) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page"+n).classList.add("active");
 
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-  });
-}
-
-function stopRecording(){
-  mediaRecorder.stop();
-  clearInterval(timerInterval);
-
-  mediaRecorder.onstop = ()=>{
-    const blob = new Blob(audioChunks,{type:'audio/mp3'});
-    const url = URL.createObjectURL(blob);
-    downloadLink.href = url;
-    downloadLink.download = "Bachaa_voice_message.mp3";
-    downloadLink.innerText = "⬇ Download your recording";
+  if(n === 3){
+    const letter =
+"My Bachaa,\n\n" +
+"I will write this letter for you later.\n\n" +
+"This is just a placeholder text for now.\n\n" +
+"You are very special to me.\n\n" +
+"Forever yours.";
+    typeWriter(letter, "letterText");
   }
 }
 
-/* DATE CHOICE */
-let selectedDate = "";
+/* -------- YES NO LOGIC -------- */
+let yesSize = 16;
+let teaseTexts = [
+  "Are you sure?",
+  "Think again...",
+  "My heart is waiting...",
+  "You can’t escape love"
+];
+let teaseIndex = 0;
 
-function chooseDate(btn,choice){
-  document.querySelectorAll("#page6 button").forEach(b=>b.classList.remove("selected"));
-  btn.classList.add("selected");
-  selectedDate = choice;
-  chosenDateText.innerText = "We will go for: " + choice;
+function growYes() {
+  yesSize += 6;
+  document.getElementById("yesBtn").style.fontSize = yesSize + "px";
+  document.getElementById("tease").innerText = teaseTexts[teaseIndex];
+  teaseIndex = (teaseIndex + 1) % teaseTexts.length;
 }
+
+/* -------- BUTTERFLIES & ROSES -------- */
+function spawn(symbol) {
+  const e = document.createElement("div");
+  e.className = "floating";
+  e.innerText = symbol;
+  e.style.left = Math.random()*100 + "vw";
+  e.style.animationDuration = (6 + Math.random()*4) + "s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),10000);
+}
+
+setInterval(()=>spawn("🦋"), 2000);
+setInterval(()=>spawn("🌹"), 3000);
 </script>
 
 </body>
