@@ -2,207 +2,232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Time Capsule for Bachaa</title>
+<title>For Bachaa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin:0;
   font-family: Georgia, serif;
   background:#ffe6eb;
-  text-align:center;
-  overflow:hidden;
 }
 
 .page {
   display:none;
-  padding:60px 20px;
-  animation: fade 1s ease;
+  min-height:100vh;
+  padding:20px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-.active { display:block; }
-
-@keyframes fade {
-  from {opacity:0;}
-  to {opacity:1;}
-}
-
-h1 {
-  font-size:34px;
-}
+.active { display:flex; }
 
 p {
-  font-size:20px;
+  font-size:18px;
   line-height:1.6;
   max-width:600px;
-  margin:auto;
+}
+
+h2 {
+  font-size:26px;
 }
 
 button {
-  padding:14px 28px;
-  font-size:18px;
+  padding:12px 24px;
+  font-size:16px;
   border:none;
-  border-radius:25px;
-  margin:15px;
-  cursor:pointer;
+  border-radius:20px;
   background:#e6004c;
   color:white;
-  transition:0.3s;
+  margin:10px;
+  cursor:pointer;
 }
 
-button:hover {
-  background:#ff3366;
+#noBtn {
+  background:#aaa;
+  font-size:12px;
 }
 
-.clicked {
-  background:#ffd700 !important;
+img, video {
+  width:90%;
+  max-width:320px;
+  border-radius:12px;
+  margin:15px 0;
+}
+
+.selected {
+  background:gold !important;
   color:black;
 }
 
-video, audio {
-  width:90%;
-  max-width:320px;
-  margin:15px;
-}
-
-input {
-  padding:12px;
+.timer {
   font-size:18px;
-  border-radius:10px;
-  border:1px solid #ccc;
+  margin:10px;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="music" autoplay loop src="song1.mp3"></audio>
-
 <!-- PAGE 1 -->
 <div class="page active" id="page1">
-<h1>Time Capsule 💖</h1>
-<p>
-This is a time capsule from Bunty to Bachaa.<br><br>
-Open it slowly… and keep this moment forever.
-</p>
-<button onclick="nextPage(2,this)">Open Capsule</button>
+<p id="introText"></p>
+<button onclick="goPage(2)">Begin</button>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page" id="page2">
-<h1>Our Story</h1>
-<p>This is how our love became a memory.</p>
-<video src="story.mp4" controls></video>
-<button onclick="nextPage(3,this)">Next</button>
+<h2>Will you be my Valentine? ❤️</h2>
+<p id="tease"></p>
+<button id="yesBtn" onclick="goPage(3)">YES</button>
+<button id="noBtn" onclick="growYes()">NO</button>
 </div>
 
 <!-- PAGE 3 -->
 <div class="page" id="page3">
-<h1>My Voice</h1>
-<p>Listen to this when you miss me.</p>
-<audio src="myvoice.mp3" controls></audio>
-<button onclick="nextPage(4,this)">Next</button>
+<img src="pic1.jpg">
+<p id="letterText"></p>
+<button onclick="goPage(4)">Next</button>
 </div>
 
 <!-- PAGE 4 -->
 <div class="page" id="page4">
-<h1>Your Voice</h1>
-<p>Record something for me. I will keep it forever.</p>
-<button onclick="startRecording()">🎤 Start Recording</button>
-<button onclick="stopRecording()">⏹ Stop</button>
-<a id="downloadLink"></a>
-<button onclick="nextPage(5,this)">Next</button>
+<h2>Our Story 💕</h2>
+<video src="story.mp4" controls></video>
+<button onclick="goPage(5)">Next</button>
 </div>
 
 <!-- PAGE 5 -->
 <div class="page" id="page5">
-<h1>Choose Our Next Memory</h1>
+<h2>Listen to Me 🎧</h2>
+<audio src="myvoice.mp3" controls></audio>
 
-<button onclick="chooseDate(this,'Temple Visit')">Temple Visit</button>
-<button onclick="chooseDate(this,'Movie Date')">Movie Date</button>
-<button onclick="chooseDate(this,'Bike Road Date')">Bike Road Date</button>
-<button onclick="chooseDate(this,'Candlelight Dinner')">Candlelight Dinner</button>
+<p>Now record something for me 💖</p>
+<div class="timer" id="recordTimer">Not recording</div>
 
-<p id="chosenDateText"></p>
-<button onclick="nextPage(6,this)">Lock Capsule</button>
+<button onclick="startRecording()">🎤 Start Recording</button>
+<button onclick="stopRecording()">⏹ Stop</button>
+<a id="downloadLink"></a>
+
+<button onclick="goPage(6)">Next</button>
 </div>
 
 <!-- PAGE 6 -->
 <div class="page" id="page6">
-<h1>Lock the Capsule 🔐</h1>
-<p>Only Bachaa can open it.</p>
-<input type="password" id="passwordInput" placeholder="Enter secret word">
-<br><br>
-<button onclick="checkPassword()">Unlock</button>
-<p id="passwordMessage"></p>
+<h2>Choose Our Date 🌹</h2>
+<button onclick="chooseDate(this,'Temple Visit')">Temple Visit</button>
+<button onclick="chooseDate(this,'Candlelight Dinner')">Candlelight Dinner</button>
+<button onclick="chooseDate(this,'Road Trip')">Road Trip</button>
+<button onclick="chooseDate(this,'Movie Date')">Movie Date</button>
+
+<p id="chosenDateText"></p>
+<button onclick="goPage(7)">Final</button>
 </div>
 
 <!-- PAGE 7 -->
 <div class="page" id="page7">
-<h1>Capsule Sealed ❤️</h1>
+<h2>For You, Bachaa ❤️</h2>
 <p id="finalText"></p>
 </div>
 
 <script>
-let selectedDate = "";
-const correctPassword = "Bachaa";
+/* INTRO */
+let introMsg = "This is made only for you...\n\nPlease don’t rush.\nSit comfortably.\nWear earphones.\n\nTap Begin when you are ready.";
+typeWriter(introMsg,"introText");
 
-function nextPage(n,btn){
-  if(btn) btn.classList.add("clicked");
+/* YES NO */
+let yesSize = 16;
+let teaseTexts = ["Are you sure? 😏","Think again...","My heart is waiting...","You can’t escape love 💖"];
+let teaseIndex = 0;
+
+function growYes(){
+  yesSize += 6;
+  document.getElementById("yesBtn").style.fontSize = yesSize+"px";
+  document.getElementById("tease").innerText = teaseTexts[teaseIndex];
+  teaseIndex = (teaseIndex+1)%teaseTexts.length;
+}
+
+/* LOVE LETTER */
+let letter = "My Bachaa,\n\nI will write this letter for you later.\nYou are very special to me.\n\nThis is only for you.\n\nForever yours.";
+
+/* PAGE CONTROL */
+function goPage(n){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page"+n).classList.add("active");
-}
 
-function chooseDate(btn,choice){
-  document.querySelectorAll("#page5 button").forEach(b=>b.classList.remove("clicked"));
-  btn.classList.add("clicked");
-  selectedDate = choice;
-  localStorage.setItem("chosenDate", choice);
-  chosenDateText.innerText = "We will go for: " + choice + " ❤️";
-}
+  if(n===3){
+    typeWriter(letter,"letterText");
+  }
 
-function checkPassword(){
-  const input = document.getElementById("passwordInput").value;
-  if(input === correctPassword){
-    nextPage(7);
-    showFinalMessage();
-  } else {
-    passwordMessage.innerText = "Wrong word… try again my love ❤️";
+  if(n===7){
+    finalText.innerHTML = 
+      "Our next date will be: <b>"+selectedDate+"</b><br><br>" +
+      "This was made only for you.<br>" +
+      "Thank you for being in my life ❤️";
   }
 }
 
-function showFinalMessage(){
-  const date = localStorage.getItem("chosenDate");
-  finalText.innerHTML =
-    "This capsule holds our love.<br><br>" +
-    "Our next memory will be: <b>" + date + "</b><br><br>" +
-    "Open this again after one year and remember today.<br><br>" +
-    "Forever yours,<br>Bunty ❤️";
+/* TYPEWRITER */
+function typeWriter(text,id){
+  let i=0;
+  let el=document.getElementById(id);
+  el.innerText="";
+  let timer=setInterval(()=>{
+    if(i<text.length){
+      el.innerText += text.charAt(i);
+      i++;
+    } else clearInterval(timer);
+  },40);
 }
 
-/* Voice recording */
+/* VOICE RECORDING WITH TIMER */
 let mediaRecorder;
 let audioChunks=[];
+let seconds=0;
+let timerInterval;
 
 function startRecording(){
-  navigator.mediaDevices.getUserMedia({ audio:true })
-  .then(stream=>{
-    mediaRecorder=new MediaRecorder(stream);
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.start();
     audioChunks=[];
-    mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+    seconds=0;
+    recordTimer.innerText="Recording: 0 sec";
+
+    timerInterval = setInterval(()=>{
+      seconds++;
+      recordTimer.innerText = "Recording: " + seconds + " sec";
+    },1000);
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
   });
 }
 
 function stopRecording(){
   mediaRecorder.stop();
-  mediaRecorder.onstop=()=>{
-    const blob=new Blob(audioChunks,{type:'audio/mp3'});
-    const url=URL.createObjectURL(blob);
-    const link=document.getElementById("downloadLink");
-    link.href=url;
-    link.download="Bachaa_voice_message.mp3";
-    link.innerText="⬇ Download & Send to Bunty";
-  };
+  clearInterval(timerInterval);
+
+  mediaRecorder.onstop = ()=>{
+    const blob = new Blob(audioChunks,{type:'audio/mp3'});
+    const url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = "Bachaa_voice_message.mp3";
+    downloadLink.innerText = "⬇ Download your recording";
+  }
+}
+
+/* DATE CHOICE */
+let selectedDate = "";
+
+function chooseDate(btn,choice){
+  document.querySelectorAll("#page6 button").forEach(b=>b.classList.remove("selected"));
+  btn.classList.add("selected");
+  selectedDate = choice;
+  chosenDateText.innerText = "We will go for: " + choice;
 }
 </script>
 
