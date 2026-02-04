@@ -7,28 +7,47 @@
 <style>
 body {
   margin:0;
-  font-family: Arial, sans-serif;
-  background: #ffb6c1;
+  font-family: "Comic Sans MS", cursive;
+  background: linear-gradient(#ffb6c1,#ffd1dc);
   text-align:center;
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
 .page {
   display:none;
-  padding:20px;
+  padding:40px 20px;
 }
 
 .active {
   display:block;
 }
 
+h2 {
+  font-size:32px;
+}
+
+p {
+  font-size:20px;
+  line-height:1.5;
+}
+
 button {
-  padding:12px 20px;
+  padding:15px 25px;
   font-size:18px;
   border:none;
-  border-radius:10px;
-  margin:10px;
+  border-radius:20px;
+  margin:12px;
   cursor:pointer;
+  transition:0.3s;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.clicked {
+  background: gold !important;
+  color:black !important;
 }
 
 #yesBtn {
@@ -39,7 +58,7 @@ button {
 #noBtn {
   background:gray;
   color:white;
-  font-size:10px;
+  font-size:12px;
 }
 
 img, video {
@@ -47,18 +66,31 @@ img, video {
   max-width:300px;
   border-radius:15px;
   margin:10px;
+  box-shadow:0 0 10px rgba(0,0,0,0.3);
 }
 
-.heart {
+.floating {
   position:fixed;
-  color:red;
-  font-size:20px;
-  animation: float 4s linear infinite;
+  font-size:22px;
+  animation: float 6s linear infinite;
 }
 
 @keyframes float {
-  0% {bottom:0; opacity:1;}
-  100% {bottom:100%; opacity:0;}
+  0% {bottom:-10%; opacity:1;}
+  100% {bottom:110%; opacity:0;}
+}
+
+.confetti {
+  position:fixed;
+  width:8px;
+  height:8px;
+  background:red;
+  animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+  0% {top:-10px;}
+  100% {top:100vh;}
 }
 </style>
 </head>
@@ -70,64 +102,61 @@ img, video {
 <!-- PAGE 1 -->
 <div class="page active" id="page1">
 <h2>Hi my Bachaa 💖</h2>
-<h3>Will you be my Valentine?</h3>
+<p>Will you be my Valentine?</p>
 <p id="tease"></p>
-<button id="yesBtn" onclick="nextPage(2)">YES ❤️</button>
+<button id="yesBtn" onclick="yesClicked()">YES ❤️</button>
 <button id="noBtn" onclick="growYes()">NO 😒</button>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page" id="page2">
-<h2>Gift 1: My Love Letter 💌</h2>
+<h2>💌 My Love Letter 💌</h2>
 <img src="pic1.jpg">
 <p>
 My Bachaa 💖<br><br>
-From the moment you came into my life, everything started feeling more beautiful.
-Your smile is my favorite sight and your voice is my favorite sound.<br><br>
-You are my peace, my happiness, and my biggest blessing.
+You are my happiness, my peace and my forever.<br>
+Every smile of yours makes my world brighter.<br><br>
 I want every tomorrow with you.<br><br>
-I love you more than words can ever explain.<br><br>
 Forever yours,<br>
 Bunty ❤️
 </p>
-<button onclick="nextPage(3)">Open Next Gift 🎁</button>
+<button onclick="nextPage(3,this)">Open Next Gift 🎁</button>
 </div>
 
 <!-- PAGE 3 -->
 <div class="page" id="page3">
-<h2>Gift 2: Our Memories 🥰</h2>
+<h2>📸 Our Memories 🥰</h2>
 <img src="pic2.jpg">
 <img src="pic3.jpg">
 <img src="pic4.jpg">
 <video src="video1.mp4" controls></video>
 <video src="video2.mp4" controls></video>
-<button onclick="nextPage(4)">Next Surprise 💝</button>
+<button onclick="nextPage(4,this)">Next Surprise 💝</button>
 </div>
 
 <!-- PAGE 4 -->
 <div class="page" id="page4">
-<h2>Gift 3: My Promises 💍</h2>
+<h2>🤞 My Promises 💍</h2>
 <div id="promiseBox"></div>
-<button onclick="showPromise()">Next Promise 🤞</button>
+<button onclick="showPromise(this)">Next Promise 🤞</button>
 </div>
 
 <!-- PAGE 5 -->
 <div class="page" id="page5">
-<h2>Gift 4: Choose Our Date 😘</h2>
-<button onclick="finalChoice('Temple Visit Together')">Temple Visit Together 🛕</button>
-<button onclick="finalChoice('Movie Date')">Movie Date 🎬</button>
-<button onclick="finalChoice('Bike Road Date')">Bike Road Date 🏍</button>
-<button onclick="finalChoice('Candlelight Dinner')">Candlelight Dinner 🕯</button>
+<h2>🌹 Choose Our Date 🌹</h2>
+<button onclick="finalChoice(this,'Temple Visit Together')">🛕 Temple Visit</button>
+<button onclick="finalChoice(this,'Movie Date')">🎬 Movie Date</button>
+<button onclick="finalChoice(this,'Bike Road Date')">🏍 Bike Road Date</button>
+<button onclick="finalChoice(this,'Candlelight Dinner')">🕯 Candlelight Dinner</button>
 <p id="choiceText"></p>
-<button onclick="nextPage(6)">Final Message 💖</button>
+<button onclick="nextPage(6,this)">Final Message 💖</button>
 </div>
 
 <!-- PAGE 6 -->
 <div class="page" id="page6">
 <h2>Happy Valentine’s Day Bachaa ❤️</h2>
 <p>
-You are my love, my peace, my forever.<br>
-I love you endlessly 💕<br><br>
+You are my love, my peace, my forever 💕<br><br>
 Forever yours,<br>
 Bunty ❤️
 </p>
@@ -135,30 +164,37 @@ Bunty ❤️
 
 <script>
 let yesSize = 18;
-let teaseTexts = ["Are you sure Bachaa? 🥺","Think again my love 💕","My heart is waiting ❤️","You can't escape love 😘"];
+let teaseTexts = ["Are you sure Bachaa? 🥺","Think again 💕","My heart waits ❤️","You can’t escape love 😘"];
 let teaseIndex = 0;
 
 let promises = [
-"I promise to always respect you and your feelings ❤️",
-"I promise to stand by you in every happy and difficult moment 💖",
-"I promise to make you smile even when life gets hard 😊",
-"I promise to always choose you and our love 💑",
-"I promise to love you more every single day 💞"
+"I promise to always respect you ❤️",
+"I promise to stay with you in every situation 💖",
+"I promise to make you smile 😊",
+"I promise to choose you always 💑",
+"I promise to love you forever 💞"
 ];
+
 let promiseIndex = 0;
-
 const music = document.getElementById("music");
-music.src = "song1.mp3";
+music.src="song1.mp3";
 
-function growYes() {
-  yesSize += 10;
-  document.getElementById("yesBtn").style.fontSize = yesSize + "px";
-  document.getElementById("tease").innerText = teaseTexts[teaseIndex];
-  teaseIndex = (teaseIndex + 1) % teaseTexts.length;
+function growYes(){
+  yesSize+=8;
+  yesBtn.style.fontSize=yesSize+"px";
+  tease.innerText=teaseTexts[teaseIndex];
+  teaseIndex=(teaseIndex+1)%teaseTexts.length;
+  spawnEmoji("😜");
 }
 
-function nextPage(n) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+function yesClicked(){
+  spawnConfetti();
+  nextPage(2);
+}
+
+function nextPage(n,btn){
+  if(btn) btn.classList.add("clicked");
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page"+n).classList.add("active");
 
   if(n==2) music.src="song2.mp3";
@@ -166,33 +202,51 @@ function nextPage(n) {
   if(n>=4) music.src="song4.mp3";
 }
 
-function showPromise() {
-  if(promiseIndex < promises.length) {
-    document.getElementById("promiseBox").innerHTML =
-      "<p>"+promises[promiseIndex]+"</p>" +
-      "<button>I accept this promise – Bachaa 💖</button><br>" +
-      "<button>I promise too – Bunty 🤞</button>";
+function showPromise(btn){
+  btn.classList.add("clicked");
+  if(promiseIndex<promises.length){
+    promiseBox.innerHTML=
+      "<p>"+promises[promiseIndex]+"</p>"+
+      "<button class='clicked'>I accept – Bachaa 💖</button><br>"+
+      "<button class='clicked'>I promise too – Bunty 🤞</button>";
+    spawnEmoji("💍");
     promiseIndex++;
   } else {
     nextPage(5);
   }
 }
 
-function finalChoice(choice) {
-  document.getElementById("choiceText").innerText =
-    "Yay! We will go for: " + choice + " ❤️";
+function finalChoice(btn,choice){
+  document.querySelectorAll("#page5 button").forEach(b=>b.classList.remove("clicked"));
+  btn.classList.add("clicked");
+  choiceText.innerText="We will go for: "+choice+" ❤️";
+  spawnEmoji("🌹");
 }
 
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random()*100 + "vw";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),4000);
+function spawnEmoji(symbol){
+  const e=document.createElement("div");
+  e.className="floating";
+  e.innerText=symbol;
+  e.style.left=Math.random()*100+"vw";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),6000);
 }
-setInterval(createHeart,500);
+
+function spawnConfetti(){
+  for(let i=0;i<30;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.backgroundColor=["red","pink","yellow","white"][Math.floor(Math.random()*4)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+setInterval(()=>spawnEmoji("❤️"),800);
+setInterval(()=>spawnEmoji("🌹"),1500);
 </script>
 
 </body>
 </html>
+
