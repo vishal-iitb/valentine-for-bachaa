@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Bachaa Valentine</title>
+<title>For Bachaa</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -13,7 +13,7 @@ body{
   overflow:hidden;
 }
 
-/* Page layout */
+/* Pages */
 .page{
   display:none;
   width:100vw;
@@ -31,7 +31,7 @@ body{
 
 p{
   font-size:18px;
-  line-height:1.8;
+  line-height:2;
   max-width:600px;
   white-space:pre-line;
 }
@@ -74,7 +74,9 @@ img,video{
   font-size:22px;
   animation: floatUp linear infinite;
   opacity:0.8;
+  pointer-events:none; /* VERY IMPORTANT FIX */
 }
+
 @keyframes floatUp{
   from{transform:translateY(100vh);}
   to{transform:translateY(-10vh);}
@@ -153,11 +155,12 @@ img,video{
 <script>
 /* INTRO TEXT */
 const introMsg =
-"This is made only for you.\n\n" +
+"Thissss is made only for you.\n\n" +
 "Please don’t rush.\n\n" +
 "Sit comfortably.\n\n" +
 "Wear earphones.\n\n" +
 "Tap Begin when you are ready.";
+
 typeWriter(introMsg,"introText");
 
 /* LOVE LETTER */
@@ -192,7 +195,7 @@ function goPage(n){
 
   if(n===7){
     finalText.innerHTML=
-      "Our next date will be: <b>"+selectedDate+"</b><br><br>"+
+      "Our next date will be: <b>"+selectedDate+"</b>\n\n"+
       "This was made only for you.\n\n"+
       "Thank you for being in my life ❤️";
   }
