@@ -69,6 +69,13 @@ video, audio {
   margin:15px;
 }
 
+input {
+  padding:12px;
+  font-size:18px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
 /* Rose petals */
 .petal {
   position:fixed;
@@ -81,13 +88,6 @@ video, audio {
 @keyframes fall {
   0% {transform: translateY(0) rotate(0deg);}
   100% {transform: translateY(110vh) rotate(360deg);}
-}
-
-input {
-  padding:12px;
-  font-size:18px;
-  border-radius:10px;
-  border:1px solid #ccc;
 }
 </style>
 </head>
@@ -105,7 +105,7 @@ input {
 <button id="noBtn" onclick="growYes()">No</button>
 </div>
 
-<!-- PAGE 2: STORY VIDEO -->
+<!-- PAGE 2 -->
 <div class="page" id="page2">
 <h1>Our Love Story 💕</h1>
 <p>This is not just a video… this is every moment that made me fall in love with you.</p>
@@ -113,7 +113,7 @@ input {
 <button onclick="nextPage(3,this)">Continue</button>
 </div>
 
-<!-- PAGE 3: VOICE PAGE -->
+<!-- PAGE 3 -->
 <div class="page" id="page3">
 <h1>Listen to My Voice 🎧</h1>
 <p>Close your eyes and listen to my heart.</p>
@@ -127,15 +127,29 @@ input {
 <button onclick="nextPage(4,this)">Next</button>
 </div>
 
-<!-- PAGE 4: PROMISES -->
+<!-- PAGE 4 -->
 <div class="page" id="page4">
 <h1>My Promises 🤍</h1>
 <div id="promiseBox"></div>
 <button onclick="showPromise(this)">Next Promise</button>
 </div>
 
-<!-- PAGE 5: PASSWORD -->
+<!-- PAGE 5: DATE OPTION -->
 <div class="page" id="page5">
+<h1>Choose Our Date 🌹</h1>
+<p>Pick what we will do when we meet next, Bachaa.</p>
+
+<button onclick="finalChoice(this,'Temple Visit Together')">🛕 Temple Visit</button>
+<button onclick="finalChoice(this,'Movie Date')">🎬 Movie Date</button>
+<button onclick="finalChoice(this,'Bike Road Date')">🏍 Bike Road Date</button>
+<button onclick="finalChoice(this,'Candlelight Dinner')">🕯 Candlelight Dinner</button>
+
+<p id="choiceText"></p>
+<button onclick="nextPage(6,this)">Continue</button>
+</div>
+
+<!-- PAGE 6: PASSWORD -->
+<div class="page" id="page6">
 <h1>Unlock My Final Gift 🔐</h1>
 <p>Only Bachaa can unlock this.</p>
 <input type="password" id="passwordInput" placeholder="Enter secret word">
@@ -144,8 +158,8 @@ input {
 <p id="passwordMessage"></p>
 </div>
 
-<!-- PAGE 6: FINAL -->
-<div class="page" id="page6">
+<!-- PAGE 7 -->
+<div class="page" id="page7">
 <h1>Happy Valentine’s Day Bachaa ❤️</h1>
 <p>
 You unlocked my heart.<br><br>
@@ -169,8 +183,9 @@ let promises=[
 ];
 
 let promiseIndex=0;
-const correctPassword="Bachaa";
+let selectedDate="";
 
+const correctPassword="Bachaa";
 const music=document.getElementById("music");
 music.src="song1.mp3";
 
@@ -208,10 +223,17 @@ function showPromise(btn){
   }
 }
 
+function finalChoice(btn,choice){
+  document.querySelectorAll("#page5 button").forEach(b=>b.classList.remove("clicked"));
+  btn.classList.add("clicked");
+  selectedDate=choice;
+  choiceText.innerText="We will go for: "+choice+" ❤️";
+}
+
 function checkPassword(){
   const input=document.getElementById("passwordInput").value;
   if(input===correctPassword){
-    nextPage(6);
+    nextPage(7);
   } else {
     passwordMessage.innerText="Wrong word… try again my love ❤️";
   }
