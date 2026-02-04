@@ -3,197 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <title>Bachaa Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
+body{
   margin:0;
   font-family: Arial, sans-serif;
-  background: #ffb6c1;
-  text-align:center;
-  overflow-x:hidden;
+  background:#ffb6c1;
+  overflow:hidden;
 }
 
-.page {
+/* Page layout */
+.page{
   display:none;
+  width:100vw;
+  height:100vh;
   padding:20px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-.active {
-  display:block;
-}
+.active{display:flex;}
 
-button {
-  padding:12px 20px;
+p{
   font-size:18px;
+  line-height:1.8;
+  max-width:600px;
+  white-space:pre-line;
+}
+
+h2{
+  margin-bottom:15px;
+}
+
+button{
+  padding:12px 25px;
+  font-size:16px;
   border:none;
-  border-radius:10px;
+  border-radius:20px;
   margin:10px;
   cursor:pointer;
-}
-
-#yesBtn {
   background:red;
   color:white;
 }
 
-#noBtn {
+#noBtn{
   background:gray;
-  color:white;
-  font-size:10px;
+  font-size:12px;
 }
 
-img, video {
+img,video{
   width:90%;
   max-width:300px;
   border-radius:15px;
-  margin:10px;
+  margin-bottom:15px;
 }
 
-.heart {
+.selected{
+  background:gold !important;
+  color:black;
+}
+
+/* Floating butterflies & roses */
+.floating{
   position:fixed;
-  color:red;
-  font-size:20px;
-  animation: float 4s linear infinite;
+  font-size:22px;
+  animation: floatUp linear infinite;
+  opacity:0.8;
+}
+@keyframes floatUp{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
 }
 
-@keyframes float {
-  0% {bottom:0; opacity:1;}
-  100% {bottom:100%; opacity:0;}
+.timer{
+  font-size:18px;
+  margin:10px;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="music" autoplay loop></audio>
-
 <!-- PAGE 1 -->
 <div class="page active" id="page1">
-<h2>Hi my Bachaa 💖</h2>
-<h3>Will you be my Valentine?</h3>
-<p id="tease"></p>
-<button id="yesBtn" onclick="nextPage(2)">YES ❤️</button>
-<button id="noBtn" onclick="growYes()">NO 😒</button>
+<p id="introText"></p>
+<button onclick="goPage(2)">Begin</button>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page" id="page2">
-<h2>Gift 1: My Love Letter 💌</h2>
-<img src="pic1.jpg">
-<p>
-My Bachaa 💖<br><br>
-From the moment you came into my life, everything started feeling more beautiful.
-Your smile is my favorite sight and your voice is my favorite sound.<br><br>
-You are my peace, my happiness, and my biggest blessing.
-I want every tomorrow with you.<br><br>
-I love you more than words can ever explain.<br><br>
-Forever yours,<br>
-Bunty ❤️
-</p>
-<button onclick="nextPage(3)">Open Next Gift 🎁</button>
+<h2>Will you be my Valentine? ❤️</h2>
+<p id="tease"></p>
+<button id="yesBtn" onclick="goPage(3)">YES</button>
+<button id="noBtn" onclick="growYes()">NO</button>
 </div>
 
 <!-- PAGE 3 -->
 <div class="page" id="page3">
-<h2>Gift 2: Our Memories 🥰</h2>
-<img src="pic2.jpg">
-<img src="pic3.jpg">
-<img src="pic4.jpg">
-<video src="video1.mp4" controls></video>
-<video src="video2.mp4" controls></video>
-<button onclick="nextPage(4)">Next Surprise 💝</button>
+<img src="pic1.jpg">
+<p id="letterText"></p>
+<button onclick="goPage(4)">Next</button>
 </div>
 
 <!-- PAGE 4 -->
 <div class="page" id="page4">
-<h2>Gift 3: My Promises 💍</h2>
-<div id="promiseBox"></div>
-<button onclick="showPromise()">Next Promise 🤞</button>
+<h2>Our Story 💕</h2>
+<video src="story.mp4" controls></video>
+<button onclick="goPage(5)">Next</button>
 </div>
 
 <!-- PAGE 5 -->
 <div class="page" id="page5">
-<h2>Gift 4: Choose Our Date 😘</h2>
-<button onclick="finalChoice('Temple Visit Together')">Temple Visit Together 🛕</button>
-<button onclick="finalChoice('Movie Date')">Movie Date 🎬</button>
-<button onclick="finalChoice('Bike Road Date')">Bike Road Date 🏍</button>
-<button onclick="finalChoice('Candlelight Dinner')">Candlelight Dinner 🕯</button>
-<p id="choiceText"></p>
-<button onclick="nextPage(6)">Final Message 💖</button>
+<h2>My Voice For You 🎧</h2>
+<audio src="myvoice.mp3" controls></audio>
+
+<p>Now record something for me 💖</p>
+<div class="timer" id="recordTimer">Not recording</div>
+
+<button onclick="startRecording()">🎤 Start Recording</button>
+<button onclick="stopRecording()">⏹ Stop</button>
+<a id="downloadLink"></a>
+
+<button onclick="goPage(6)">Next</button>
 </div>
 
 <!-- PAGE 6 -->
 <div class="page" id="page6">
-<h2>Happy Valentine’s Day Bachaa ❤️</h2>
-<p>
-You are my love, my peace, my forever.<br>
-I love you endlessly 💕<br><br>
-Forever yours,<br>
-Bunty ❤️
-</p>
+<h2>Choose Our Date 🌹</h2>
+<button onclick="chooseDate(this,'Temple Visit')">Temple Visit</button>
+<button onclick="chooseDate(this,'Candlelight Dinner')">Candlelight Dinner</button>
+<button onclick="chooseDate(this,'Road Trip')">Road Trip</button>
+<button onclick="chooseDate(this,'Movie Date')">Movie Date</button>
+
+<p id="chosenDateText"></p>
+<button onclick="goPage(7)">Final</button>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="page7">
+<h2>For You Bachaa ❤️</h2>
+<p id="finalText"></p>
 </div>
 
 <script>
-let yesSize = 18;
-let teaseTexts = ["Are you sure Bachaa? 🥺","Think again my love 💕","My heart is waiting ❤️","You can't escape love 😘"];
-let teaseIndex = 0;
+/* INTRO TEXT */
+const introMsg =
+"This is made only for you.\n\n" +
+"Please don’t rush.\n\n" +
+"Sit comfortably.\n\n" +
+"Wear earphones.\n\n" +
+"Tap Begin when you are ready.";
+typeWriter(introMsg,"introText");
 
-let promises = [
-"I promise to always respect you and your feelings ❤️",
-"I promise to stand by you in every happy and difficult moment 💖",
-"I promise to make you smile even when life gets hard 😊",
-"I promise to always choose you and our love 💑",
-"I promise to love you more every single day 💞"
-];
-let promiseIndex = 0;
+/* LOVE LETTER */
+const letter =
+"My Bachaa,\n\n" +
+"I will write this letter for you later.\n\n" +
+"You are very special to me.\n\n" +
+"This is made only for you.\n\n" +
+"Forever yours.";
 
-const music = document.getElementById("music");
-music.src = "song1.mp3";
-
-function growYes() {
-  yesSize += 10;
-  document.getElementById("yesBtn").style.fontSize = yesSize + "px";
-  document.getElementById("tease").innerText = teaseTexts[teaseIndex];
-  teaseIndex = (teaseIndex + 1) % teaseTexts.length;
+/* TYPEWRITER */
+function typeWriter(text,id){
+  let i=0;
+  let el=document.getElementById(id);
+  el.innerText="";
+  let timer=setInterval(()=>{
+    if(i<text.length){
+      el.innerText+=text.charAt(i);
+      i++;
+    } else clearInterval(timer);
+  },150);
 }
 
-function nextPage(n) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+/* PAGE CONTROL */
+function goPage(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page"+n).classList.add("active");
 
-  if(n==2) music.src="song2.mp3";
-  if(n==3) music.src="song3.mp3";
-  if(n>=4) music.src="song4.mp3";
-}
+  if(n===3){
+    typeWriter(letter,"letterText");
+  }
 
-function showPromise() {
-  if(promiseIndex < promises.length) {
-    document.getElementById("promiseBox").innerHTML =
-      "<p>"+promises[promiseIndex]+"</p>" +
-      "<button>I accept this promise – Bachaa 💖</button><br>" +
-      "<button>I promise too – Bunty 🤞</button>";
-    promiseIndex++;
-  } else {
-    nextPage(5);
+  if(n===7){
+    finalText.innerHTML=
+      "Our next date will be: <b>"+selectedDate+"</b><br><br>"+
+      "This was made only for you.\n\n"+
+      "Thank you for being in my life ❤️";
   }
 }
 
-function finalChoice(choice) {
-  document.getElementById("choiceText").innerText =
-    "Yay! We will go for: " + choice + " ❤️";
+/* YES NO LOGIC */
+let yesSize=16;
+let teaseTexts=["Are you sure?","Think again...","My heart is waiting...","You can’t escape love 💖"];
+let teaseIndex=0;
+
+function growYes(){
+  yesSize+=6;
+  yesBtn.style.fontSize=yesSize+"px";
+  tease.innerText=teaseTexts[teaseIndex];
+  teaseIndex=(teaseIndex+1)%teaseTexts.length;
 }
 
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random()*100 + "vw";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),4000);
+/* VOICE RECORDING WITH TIMER */
+let mediaRecorder;
+let audioChunks=[];
+let seconds=0;
+let timerInterval;
+
+function startRecording(){
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    mediaRecorder=new MediaRecorder(stream);
+    mediaRecorder.start();
+    audioChunks=[];
+    seconds=0;
+    recordTimer.innerText="Recording: 0 sec";
+
+    timerInterval=setInterval(()=>{
+      seconds++;
+      recordTimer.innerText="Recording: "+seconds+" sec";
+    },1000);
+
+    mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+  });
 }
-setInterval(createHeart,500);
+
+function stopRecording(){
+  mediaRecorder.stop();
+  clearInterval(timerInterval);
+
+  mediaRecorder.onstop=()=>{
+    const blob=new Blob(audioChunks,{type:'audio/mp3'});
+    const url=URL.createObjectURL(blob);
+    downloadLink.href=url;
+    downloadLink.download="Bachaa_voice_message.mp3";
+    downloadLink.innerText="⬇ Download your recording";
+  };
+}
+
+/* DATE */
+let selectedDate="";
+
+function chooseDate(btn,choice){
+  document.querySelectorAll("#page6 button").forEach(b=>b.classList.remove("selected"));
+  btn.classList.add("selected");
+  selectedDate=choice;
+  chosenDateText.innerText="We will go for: "+choice;
+}
+
+/* BUTTERFLIES & ROSES */
+function spawn(symbol){
+  const e=document.createElement("div");
+  e.className="floating";
+  e.innerText=symbol;
+  e.style.left=Math.random()*100+"vw";
+  e.style.animationDuration=(6+Math.random()*4)+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),10000);
+}
+
+setInterval(()=>spawn("🦋"),2000);
+setInterval(()=>spawn("🌹"),3000);
 </script>
 
 </body>
 </html>
-
