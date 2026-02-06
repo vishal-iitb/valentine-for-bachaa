@@ -2,128 +2,453 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Bachaa</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added for mobile responsiveness -->
+<title>For My Bachaa 💖</title>
 
 <style>
-body{
+body {
   margin:0;
-  font-family: Arial, sans-serif;
-  background:#ffb6c1;
-  overflow:hidden;
-}
-
-/* Page layout */
-.page{
-  width:100vw;
-  height:100vh;
-  padding:20px;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* A bit more playful font */
+  background: #ffecf2; /* Lighter pink background */
   text-align:center;
+  overflow-x:hidden;
+  color: #333;
+  display: flex; /* Use flexbox for vertical centering */
+  flex-direction: column;
+  min-height: 100vh; /* Ensure body takes full viewport height */
 }
 
-p{
-  font-size:20px;
-  line-height:2;
-  white-space:pre-line;
+.page {
+  display:none;
+  padding:20px;
+  flex: 1; /* Allow pages to grow and push content */
+  display: flex; /* Use flexbox for content within the page */
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
-h2{
-  margin-bottom:20px;
+.active {
+  display:flex; /* Changed from block to flex for active page */
 }
 
-button{
-  padding:14px 30px;
-  font-size:18px;
+h2, h3, p {
+  margin-bottom: 15px;
+  line-height: 1.6; /* Better readability */
+}
+
+button {
+  padding:15px 25px; /* Slightly larger buttons */
+  font-size:20px; /* Slightly larger font */
   border:none;
-  border-radius:25px;
+  border-radius:30px; /* More rounded buttons */
   margin:10px;
   cursor:pointer;
-  background:red;
+  transition: all 0.3s ease; /* Smooth transitions for buttons */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Subtle shadow */
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+#beginBtn {
+  background: #ff69b4; /* Hot pink */
   color:white;
 }
 
-#noBtn{
-  background:gray;
-  font-size:12px;
+#yesBtn {
+  background: #ff4d88; /* Slightly darker pink for yes */
+  color:white;
 }
 
-img{
+#noBtn {
+  background:#cccccc;
+  color:#666;
+  font-size:12px; /* Small font size for no */
+}
+
+img, video {
   width:90%;
-  max-width:300px;
-  border-radius:15px;
-  margin-top:20px;
+  max-width:350px; /* Increased max-width for better mobile display */
+  border-radius:20px; /* More rounded images/videos */
+  margin:15px 0; /* Adjusted margin */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Shadow for media */
+}
+
+.heart {
+  position:fixed;
+  color:red;
+  font-size:25px; /* Slightly larger hearts */
+  animation: float 4s linear infinite;
+  z-index: -1; /* Send hearts behind content */
+}
+
+@keyframes float {
+  0% {bottom:0; opacity:1; transform: translateX(0);}
+  100% {bottom:100%; opacity:0; transform: translateX(calc((Math.random() - 0.5) * 50vw));} /* Added horizontal drift */
+}
+
+/* Specific styling for the slow-typing text */
+#introText, #valentineQuestion, #loveLetterContent {
+  white-space: pre-wrap; /* Preserve whitespace and allow wrapping */
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.2em; /* Slightly larger text */
+}
+
+#valentineQuestion {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #e91e63; /* Darker pink for the question */
+}
+
+/* Recording timer display */
+#recordTimer {
+  font-size: 1.5em;
+  color: #ff4d88;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* Ensure buttons are visible on smaller screens if content is long */
+.scrollable-content {
+  max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+  overflow-y: auto;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.promise-section {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 400px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- VALENTINE PAGE -->
-<div class="page" id="page1">
-<h2>Will you be my Valentine? ❤️</h2>
-<p id="tease"></p>
-<div>
-  <button id="yesBtn" onclick="showLetter()">YES</button>
-  <button id="noBtn" onclick="growYes()">NO</button>
-</div>
+<audio id="music" autoplay loop></audio>
+
+<!-- PAGE 0: Intro Page -->
+<div class="page active" id="page0">
+  <div class="scrollable-content">
+    <img src="your_special_pic_for_intro.jpg" alt="Special picture for Bachaa"> <!-- Placeholder for intro pic -->
+    <p id="introText"></p>
+    <button id="beginBtn" onclick="nextPage(1)" style="display:none;">Tap to Begin ✨</button>
+  </div>
 </div>
 
-<!-- LOVE LETTER PAGE -->
-<div class="page" id="page2" style="display:none;">
-<img src="pic1.jpg">
-<p id="letterText"></p>
+<!-- PAGE 1: Will you be my Valentine? -->
+<div class="page" id="page1">
+  <div class="scrollable-content">
+    <img src="valentine_question_pic.jpg" alt="Valentine question picture"> <!-- Placeholder for Valentine question pic -->
+    <p id="valentineQuestion"></p>
+    <p id="tease"></p>
+    <button id="yesBtn" onclick="nextPage(2)">YES ❤️</button>
+    <button id="noBtn" onclick="growYes()">NO 😒</button>
+  </div>
 </div>
+
+<!-- PAGE 2: Gift 1 - My Love Letter -->
+<div class="page" id="page2">
+  <div class="scrollable-content">
+    <h2>Gift 1: My Love Letter 💌</h2>
+    <img src="love_letter_pic.jpg" alt="Love letter illustration"> <!-- Placeholder for love letter pic -->
+    <p id="loveLetterContent"></p>
+    <button onclick="nextPage(3)">Open Next Gift 🎁</button>
+  </div>
+</div>
+
+<!-- PAGE 3: Gift 2 - Our Memories (Pictures & Story Video) -->
+<div class="page" id="page3">
+  <div class="scrollable-content">
+    <h2>Gift 2: Our Memories 🥰</h2>
+    <img src="pic2.jpg" alt="Memory picture 1">
+    <img src="pic3.jpg" alt="Memory picture 2">
+    <img src="pic4.jpg" alt="Memory picture 3">
+    <video src="story.mp4" controls autoplay muted loop></video> <!-- Changed to story.mp4 and added controls/autoplay/muted -->
+    <button onclick="nextPage(4)">Next Surprise 💝</button>
+  </div>
+</div>
+
+<!-- PAGE 4: Gift 3 - My Promises -->
+<div class="page" id="page4">
+  <div class="scrollable-content">
+    <h2>Gift 3: My Promises 💍</h2>
+    <div id="promiseBox"></div>
+    <button onclick="showPromise()">Next Promise 🤞</button>
+  </div>
+</div>
+
+<!-- PAGE 5: My Voice Note & Your Recording -->
+<div class="page" id="page5">
+  <div class="scrollable-content">
+    <h2>My Heart's Whisper & Your Reply ❤️</h2>
+    <p>Listen to my special message for you whenever you feel low:</p>
+    <audio controls src="my_voice_note.mp3"></audio> <!-- Placeholder for your voice note -->
+
+    <p style="margin-top:20px;">Now, it's your turn Bachaa! Record something lovely for me:</p>
+    <button id="startRecordBtn">Start Recording 🎤</button>
+    <button id="stopRecordBtn" style="display:none;">Stop Recording ⏹️</button>
+    <p id="recordTimer">00:00</p>
+    <button id="downloadRecordBtn" style="display:none;">Download Recording 💾</button>
+    <audio id="recordedAudio" controls style="display:none;"></audio>
+    <button onclick="nextPage(6)">On to Our Date! ✨</button>
+  </div>
+</div>
+
+<!-- PAGE 6: Gift 4 - Choose Our Date -->
+<div class="page" id="page6">
+  <div class="scrollable-content">
+    <h2>Gift 4: Choose Our Date 😘</h2>
+    <p>My Bachaa, pick one special thing we can do together very soon!</p>
+    <button onclick="finalChoice('Temple Visit Together')">Temple Visit Together 🛕</button>
+    <button onclick="finalChoice('Candlelight Dinner')">Candlelight Dinner 🕯️</button>
+    <button onclick="finalChoice('Bike Road Trip')">Bike Road Trip 🏍️</button>
+    <button onclick="finalChoice('Movie Date')">Movie Date 🎬</button>
+    <p id="choiceText"></p>
+    <button onclick="nextPage(7)">Final Message 💖</button>
+  </div>
+</div>
+
+<!-- PAGE 7: Final Emotional Message -->
+<div class="page" id="page7">
+  <div class="scrollable-content">
+    <h2>My Forever Bachaa ❤️</h2>
+    <img src="final_message_pic.jpg" alt="Emotional final picture"> <!-- Placeholder for final pic -->
+    <p>
+    My dearest Bachaa,<br><br>
+    Every moment with you is a treasure, a dream come true. You've painted my world with colors I never knew existed.<br>
+    My love for you grows with each passing second, deeper than any ocean, brighter than any star.<br>
+    Thank you for being you, for being my everything. I promise to cherish, protect, and love you fiercely, always.<br><br>
+    You are my soulmate, my best friend, my forever.<br>
+    I love you endlessly, to the moon and back and beyond 💕<br><br>
+    Forever and always yours,<br>
+    Your Bunty ❤️
+    </p>
+  </div>
+</div>
+
 
 <script>
-/* YES NO LOGIC */
 let yesSize = 18;
 let teaseTexts = [
-  "Are you sure?",
-  "Think again...",
-  "My heart is waiting...",
-  "You can’t escape love 💖"
+  "Are you sure Bachaa? 🥺 My heart is sinking a little!",
+  "Aww, don't break my heart! 💔 Think again my love 💕",
+  "Come on, you know you want to say YES! ❤️ My heart is waiting...",
+  "Hehe, you can't escape love, my Bachaa! 😘 My 'YES' button is getting lonely!"
 ];
 let teaseIndex = 0;
 
-function growYes(){
-  yesSize += 6;
+let promises = [
+"I promise to always respect you and your feelings, making sure your voice is heard and valued above all ❤️",
+"I promise to stand by you in every happy and difficult moment, being your unwavering support and comfort 💖",
+"I promise to make you smile even when life gets hard, with silly jokes, warm hugs, and endless love 😊",
+"I promise to always choose you and our love, making our bond the priority in every decision and every day 💑",
+"I promise to love you more every single day, discovering new reasons to adore you and cherishing our journey together 💞"
+];
+let promiseIndex = 0;
+
+const music = document.getElementById("music");
+let currentPage = 0; // Keep track of the current page
+
+// Slow typing function
+function typeWriter(text, elementId, speed, callback) {
+  let i = 0;
+  const element = document.getElementById(elementId);
+  element.innerHTML = ''; // Clear content first
+  function typing() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    } else if (callback) {
+      callback();
+    }
+  }
+  typing();
+}
+
+// Initial intro text and Valentine's question
+const introMessage = "This is made for you, only for you, my dearest Bachaa 💖. Please don't rush, sit comfortably, grab your earphones, and let's embark on this little journey of love together. ✨";
+const valentineQ = "Will you be my Valentine, my beautiful Bachaa?";
+const loveLetterText = `My Dearest Bachaa 💖,
+
+From the moment you came into my life, everything started feeling more beautiful, more vibrant, more meaningful. You truly are the sunshine that brightens my darkest days.
+
+Your smile is my favorite sight, a melody that brings immense joy to my soul. And your voice, oh your voice, it's my favorite sound, a sweet whisper that calms my heart.
+
+You are my peace, my happiness, my biggest blessing, a dream I never knew I had but now can't live without. Every shared laugh, every quiet moment, every glance... they all weave into the beautiful tapestry of 'us'.
+
+I want every tomorrow with you, exploring the world, overcoming challenges, and simply growing old together, hand in hand, heart to heart.
+
+I love you more than words can ever explain, more than songs can sing, more than poems can capture. You are my everything.
+
+Forever yours,
+Your Bunty ❤️`;
+
+
+// Call typewriter for intro message on page load
+document.addEventListener("DOMContentLoaded", () => {
+  music.src = "song1.mp3"; // Intro music
+  typeWriter(introMessage, "introText", 50, () => {
+    document.getElementById("beginBtn").style.display = "block"; // Show begin button after typing
+  });
+});
+
+
+function growYes() {
+  yesSize += 10;
   document.getElementById("yesBtn").style.fontSize = yesSize + "px";
   document.getElementById("tease").innerText = teaseTexts[teaseIndex];
   teaseIndex = (teaseIndex + 1) % teaseTexts.length;
 }
 
-/* SHOW LOVE LETTER */
-function showLetter(){
-  document.getElementById("page1").style.display="none";
-  document.getElementById("page2").style.display="flex";
+function nextPage(n) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page"+n).classList.add("active");
+  currentPage = n; // Update current page
 
-  const letter =
-"My Bachaa,\n\n" +
-"I will write this love letter for you later.\n\n" +
-"You are very special to me.\n\n" +
-"This is made only for you.\n\n" +
-"Forever yours ❤️";
-
-  typeWriter(letter,"letterText");
+  // Reset and play music based on page
+  if (n === 1) {
+    music.src = "song1.mp3"; // Or a new song for the valentine question
+    music.play();
+    typeWriter(valentineQ, "valentineQuestion", 70); // Slow type valentine question
+  } else if (n === 2) {
+    music.src = "song2.mp3";
+    music.play();
+    typeWriter(loveLetterText, "loveLetterContent", 30); // Slow type love letter
+  } else if (n === 3) {
+    music.src = "song3.mp3";
+    music.play();
+  } else if (n >= 4) {
+    music.src = "song4.mp3";
+    music.play();
+  }
 }
 
-/* TYPEWRITER */
-function typeWriter(text,id){
-  let i=0;
-  let el=document.getElementById(id);
-  el.innerText="";
-  let timer=setInterval(()=>{
-    if(i<text.length){
-      el.innerText+=text.charAt(i);
-      i++;
-    } else clearInterval(timer);
-  },150);
+function showPromise() {
+  const promiseBox = document.getElementById("promiseBox");
+  promiseBox.innerHTML = ''; // Clear previous promise
+  if(promiseIndex < promises.length) {
+    const promiseDiv = document.createElement('div');
+    promiseDiv.className = 'promise-section';
+    promiseDiv.innerHTML =
+      "<p>"+promises[promiseIndex]+"</p>" +
+      "<button style='background:#90ee90; color:white; margin-top:10px;'>I accept this promise – Bachaa 💖</button><br>" +
+      "<button style='background:#add8e6; color:white;'>I promise too – Bunty 🤞</button>";
+    promiseBox.appendChild(promiseDiv);
+    promiseIndex++;
+  } else {
+    promiseBox.innerHTML = "<p>All promises made! Click below to continue.</p>";
+    document.querySelector("#page4 button").innerText = "Next Surprise 💝";
+    document.querySelector("#page4 button").onclick = () => nextPage(5);
+  }
 }
+
+function finalChoice(choice) {
+  document.getElementById("choiceText").innerText =
+    "Yay! We will go for: " + choice + " ❤️ Looking forward to it!";
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.animationDuration = (Math.random()*2 + 3) + "s"; // Randomize speed
+  heart.style.fontSize = (Math.random()*15 + 20) + "px"; // Randomize size
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(), parseFloat(heart.style.animationDuration) * 1000);
+}
+setInterval(createHeart,500);
+
+
+// Voice Recording Functionality
+let mediaRecorder;
+let audioChunks = [];
+let audioBlob;
+let recordInterval;
+let startTime;
+
+const startRecordBtn = document.getElementById('startRecordBtn');
+const stopRecordBtn = document.getElementById('stopRecordBtn');
+const downloadRecordBtn = document.getElementById('downloadRecordBtn');
+const recordTimer = document.getElementById('recordTimer');
+const recordedAudio = document.getElementById('recordedAudio');
+
+startRecordBtn.addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = event => {
+      audioChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      recordedAudio.src = audioUrl;
+      recordedAudio.style.display = 'block';
+      downloadRecordBtn.style.display = 'block';
+      clearInterval(recordInterval);
+      recordTimer.innerText = '00:00';
+    };
+
+    mediaRecorder.start();
+    startRecordBtn.style.display = 'none';
+    stopRecordBtn.style.display = 'inline-block';
+    recordedAudio.style.display = 'none'; // Hide previous recording
+    downloadRecordBtn.style.display = 'none';
+
+    startTime = Date.now();
+    recordInterval = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      const seconds = Math.floor((elapsedTime / 1000) % 60);
+      const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+      recordTimer.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+
+  } catch (err) {
+    console.error('Error accessing microphone:', err);
+    alert('Could not access microphone. Please ensure permissions are granted.');
+  }
+});
+
+stopRecordBtn.addEventListener('click', () => {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+    mediaRecorder.stream.getTracks().forEach(track => track.stop()); // Stop microphone access
+    startRecordBtn.style.display = 'inline-block';
+    stopRecordBtn.style.display = 'none';
+  }
+});
+
+downloadRecordBtn.addEventListener('click', () => {
+  if (audioBlob) {
+    const a = document.createElement('a');
+    a.href = recordedAudio.src;
+    a.download = 'Bachaa_message_for_Bunty.webm';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+});
+
 </script>
 
 </body>
