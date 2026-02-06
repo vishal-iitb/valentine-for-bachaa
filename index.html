@@ -2,51 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added for mobile responsiveness -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My Bachaa 💖</title>
 
 <style>
 body {
   margin:0;
-  font-family: 'Comic Sans MS', cursive, sans-serif; /* A bit more playful font */
-  background: #ffecf2; /* Lighter pink background */
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: #ffecf2;
   text-align:center;
   overflow-x:hidden;
   color: #333;
-  display: flex; /* Use flexbox for vertical centering */
+  display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure body takes full viewport height */
+  min-height: 100vh;
 }
 
 .page {
   display:none;
-  padding:20px;
-  flex: 1; /* Allow pages to grow and push content */
-  display: flex; /* Use flexbox for content within the page */
+  padding:15px; /* Slightly reduced padding */
+  flex: 1;
+  display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  box-sizing: border-box; /* Include padding in element's total width and height */
+  justify-content: space-evenly; /* Distribute space evenly */
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%; /* Ensure page takes full width */
+  overflow: hidden; /* Prevent scrolling within the page */
 }
 
 .active {
-  display:flex; /* Changed from block to flex for active page */
+  display:flex;
 }
 
 h2, h3, p {
-  margin-bottom: 15px;
-  line-height: 1.6; /* Better readability */
+  margin-bottom: 10px; /* Slightly reduced margin */
+  line-height: 1.5; /* Adjusted line height */
+  padding: 0 10px; /* Horizontal padding for text */
 }
 
 button {
-  padding:15px 25px; /* Slightly larger buttons */
-  font-size:20px; /* Slightly larger font */
+  padding:12px 20px; /* Slightly smaller buttons to fit */
+  font-size:18px; /* Slightly smaller font to fit */
   border:none;
-  border-radius:30px; /* More rounded buttons */
-  margin:10px;
+  border-radius:30px;
+  margin:8px; /* Slightly reduced margin */
   cursor:pointer;
-  transition: all 0.3s ease; /* Smooth transitions for buttons */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Subtle shadow */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
 button:hover {
@@ -55,84 +59,85 @@ button:hover {
 }
 
 #beginBtn {
-  background: #ff69b4; /* Hot pink */
+  background: #ff69b4;
   color:white;
 }
 
 #yesBtn {
-  background: #ff4d88; /* Slightly darker pink for yes */
+  background: #ff4d88;
   color:white;
 }
 
 #noBtn {
   background:#cccccc;
   color:#666;
-  font-size:12px; /* Small font size for no */
+  font-size:11px; /* Even smaller font size for no */
 }
 
 img, video {
   width:90%;
-  max-width:350px; /* Increased max-width for better mobile display */
-  border-radius:20px; /* More rounded images/videos */
-  margin:15px 0; /* Adjusted margin */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Shadow for media */
+  max-width:320px; /* Adjusted max-width for better fit */
+  border-radius:20px;
+  margin:10px 0; /* Adjusted margin */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  height: auto; /* Ensure aspect ratio is maintained */
+  max-height: 30vh; /* Limit height to prevent overflow on very long content */
+  object-fit: contain; /* Ensure image fits within its bounds without cropping */
 }
 
 .heart {
   position:fixed;
   color:red;
-  font-size:25px; /* Slightly larger hearts */
+  font-size:25px;
   animation: float 4s linear infinite;
-  z-index: -1; /* Send hearts behind content */
+  z-index: -1;
 }
 
 @keyframes float {
   0% {bottom:0; opacity:1; transform: translateX(0);}
-  100% {bottom:100%; opacity:0; transform: translateX(calc((Math.random() - 0.5) * 50vw));} /* Added horizontal drift */
+  100% {bottom:100%; opacity:0; transform: translateX(calc((Math.random() - 0.5) * 50vw));}
 }
 
-/* Specific styling for the slow-typing text */
 #introText, #valentineQuestion, #loveLetterContent {
-  white-space: pre-wrap; /* Preserve whitespace and allow wrapping */
+  white-space: pre-wrap;
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.2em; /* Slightly larger text */
+  margin-bottom: 15px;
+  font-size: 1.1em; /* Slightly smaller text for fitting */
 }
 
 #valentineQuestion {
-  font-size: 1.5em;
+  font-size: 1.4em; /* Adjusted font size */
   font-weight: bold;
-  color: #e91e63; /* Darker pink for the question */
+  color: #e91e63;
 }
 
-/* Recording timer display */
 #recordTimer {
-  font-size: 1.5em;
+  font-size: 1.3em; /* Adjusted font size */
   color: #ff4d88;
-  margin-top: 15px;
+  margin-top: 10px;
   font-weight: bold;
-}
-
-/* Ensure buttons are visible on smaller screens if content is long */
-.scrollable-content {
-  max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
-  overflow-y: auto;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .promise-section {
   background: rgba(255, 255, 255, 0.7);
   border-radius: 15px;
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 10px; /* Reduced padding */
+  margin-bottom: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   width: 90%;
-  max-width: 400px;
+  max-width: 380px; /* Adjusted max-width */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure audio/video controls are visible */
+audio, video {
+  width: 90%;
+  max-width: 320px;
+  margin: 10px 0;
+  flex-shrink: 0;
 }
 </style>
 </head>
@@ -143,75 +148,61 @@ img, video {
 
 <!-- PAGE 0: Intro Page -->
 <div class="page active" id="page0">
-  <div class="scrollable-content">
-    <img src="your_special_pic_for_intro.jpg" alt="Special picture for Bachaa"> <!-- Placeholder for intro pic -->
+    <img src="your_special_pic_for_intro.jpg" alt="Special picture for Bachaa">
     <p id="introText"></p>
     <button id="beginBtn" onclick="nextPage(1)" style="display:none;">Tap to Begin ✨</button>
-  </div>
 </div>
 
 <!-- PAGE 1: Will you be my Valentine? -->
 <div class="page" id="page1">
-  <div class="scrollable-content">
-    <img src="valentine_question_pic.jpg" alt="Valentine question picture"> <!-- Placeholder for Valentine question pic -->
+    <img src="valentine_question_pic.jpg" alt="Valentine question picture">
     <p id="valentineQuestion"></p>
     <p id="tease"></p>
     <button id="yesBtn" onclick="nextPage(2)">YES ❤️</button>
     <button id="noBtn" onclick="growYes()">NO 😒</button>
-  </div>
 </div>
 
 <!-- PAGE 2: Gift 1 - My Love Letter -->
 <div class="page" id="page2">
-  <div class="scrollable-content">
     <h2>Gift 1: My Love Letter 💌</h2>
-    <img src="love_letter_pic.jpg" alt="Love letter illustration"> <!-- Placeholder for love letter pic -->
+    <img src="love_letter_pic.jpg" alt="Love letter illustration">
     <p id="loveLetterContent"></p>
     <button onclick="nextPage(3)">Open Next Gift 🎁</button>
-  </div>
 </div>
 
 <!-- PAGE 3: Gift 2 - Our Memories (Pictures & Story Video) -->
 <div class="page" id="page3">
-  <div class="scrollable-content">
     <h2>Gift 2: Our Memories 🥰</h2>
     <img src="pic2.jpg" alt="Memory picture 1">
     <img src="pic3.jpg" alt="Memory picture 2">
-    <img src="pic4.jpg" alt="Memory picture 3">
-    <video src="story.mp4" controls autoplay muted loop></video> <!-- Changed to story.mp4 and added controls/autoplay/muted -->
+    <video src="story.mp4" controls autoplay muted loop></video>
     <button onclick="nextPage(4)">Next Surprise 💝</button>
-  </div>
 </div>
 
 <!-- PAGE 4: Gift 3 - My Promises -->
 <div class="page" id="page4">
-  <div class="scrollable-content">
     <h2>Gift 3: My Promises 💍</h2>
     <div id="promiseBox"></div>
     <button onclick="showPromise()">Next Promise 🤞</button>
-  </div>
 </div>
 
 <!-- PAGE 5: My Voice Note & Your Recording -->
 <div class="page" id="page5">
-  <div class="scrollable-content">
     <h2>My Heart's Whisper & Your Reply ❤️</h2>
     <p>Listen to my special message for you whenever you feel low:</p>
-    <audio controls src="my_voice_note.mp3"></audio> <!-- Placeholder for your voice note -->
+    <audio controls src="my_voice_note.mp3"></audio>
 
-    <p style="margin-top:20px;">Now, it's your turn Bachaa! Record something lovely for me:</p>
+    <p style="margin-top:15px;">Now, it's your turn Bachaa! Record something lovely for me:</p>
     <button id="startRecordBtn">Start Recording 🎤</button>
     <button id="stopRecordBtn" style="display:none;">Stop Recording ⏹️</button>
     <p id="recordTimer">00:00</p>
     <button id="downloadRecordBtn" style="display:none;">Download Recording 💾</button>
     <audio id="recordedAudio" controls style="display:none;"></audio>
     <button onclick="nextPage(6)">On to Our Date! ✨</button>
-  </div>
 </div>
 
 <!-- PAGE 6: Gift 4 - Choose Our Date -->
 <div class="page" id="page6">
-  <div class="scrollable-content">
     <h2>Gift 4: Choose Our Date 😘</h2>
     <p>My Bachaa, pick one special thing we can do together very soon!</p>
     <button onclick="finalChoice('Temple Visit Together')">Temple Visit Together 🛕</button>
@@ -220,14 +211,12 @@ img, video {
     <button onclick="finalChoice('Movie Date')">Movie Date 🎬</button>
     <p id="choiceText"></p>
     <button onclick="nextPage(7)">Final Message 💖</button>
-  </div>
 </div>
 
 <!-- PAGE 7: Final Emotional Message -->
 <div class="page" id="page7">
-  <div class="scrollable-content">
     <h2>My Forever Bachaa ❤️</h2>
-    <img src="final_message_pic.jpg" alt="Emotional final picture"> <!-- Placeholder for final pic -->
+    <img src="final_message_pic.jpg" alt="Emotional final picture">
     <p>
     My dearest Bachaa,<br><br>
     Every moment with you is a treasure, a dream come true. You've painted my world with colors I never knew existed.<br>
@@ -238,7 +227,6 @@ img, video {
     Forever and always yours,<br>
     Your Bunty ❤️
     </p>
-  </div>
 </div>
 
 
@@ -262,13 +250,13 @@ let promises = [
 let promiseIndex = 0;
 
 const music = document.getElementById("music");
-let currentPage = 0; // Keep track of the current page
+let currentPage = 0;
 
 // Slow typing function
 function typeWriter(text, elementId, speed, callback) {
   let i = 0;
   const element = document.getElementById(elementId);
-  element.innerHTML = ''; // Clear content first
+  element.innerHTML = '';
   function typing() {
     if (i < text.length) {
       element.innerHTML += text.charAt(i);
@@ -302,9 +290,9 @@ Your Bunty ❤️`;
 
 // Call typewriter for intro message on page load
 document.addEventListener("DOMContentLoaded", () => {
-  music.src = "song1.mp3"; // Intro music
+  music.src = "song1.mp3";
   typeWriter(introMessage, "introText", 50, () => {
-    document.getElementById("beginBtn").style.display = "block"; // Show begin button after typing
+    document.getElementById("beginBtn").style.display = "block";
   });
 });
 
@@ -319,17 +307,17 @@ function growYes() {
 function nextPage(n) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById("page"+n).classList.add("active");
-  currentPage = n; // Update current page
+  currentPage = n;
 
   // Reset and play music based on page
   if (n === 1) {
-    music.src = "song1.mp3"; // Or a new song for the valentine question
+    music.src = "song1.mp3";
     music.play();
-    typeWriter(valentineQ, "valentineQuestion", 70); // Slow type valentine question
+    typeWriter(valentineQ, "valentineQuestion", 70);
   } else if (n === 2) {
     music.src = "song2.mp3";
     music.play();
-    typeWriter(loveLetterText, "loveLetterContent", 30); // Slow type love letter
+    typeWriter(loveLetterText, "loveLetterContent", 30);
   } else if (n === 3) {
     music.src = "song3.mp3";
     music.play();
@@ -341,19 +329,19 @@ function nextPage(n) {
 
 function showPromise() {
   const promiseBox = document.getElementById("promiseBox");
-  promiseBox.innerHTML = ''; // Clear previous promise
+  promiseBox.innerHTML = '';
   if(promiseIndex < promises.length) {
     const promiseDiv = document.createElement('div');
     promiseDiv.className = 'promise-section';
     promiseDiv.innerHTML =
       "<p>"+promises[promiseIndex]+"</p>" +
-      "<button style='background:#90ee90; color:white; margin-top:10px;'>I accept this promise – Bachaa 💖</button><br>" +
-      "<button style='background:#add8e6; color:white;'>I promise too – Bunty 🤞</button>";
+      "<button style='background:#90ee90; color:white; margin-top:10px; font-size:16px; padding:10px 15px;'>I accept this promise – Bachaa 💖</button><br>" +
+      "<button style='background:#add8e6; color:white; font-size:16px; padding:10px 15px;'>I promise too – Bunty 🤞</button>";
     promiseBox.appendChild(promiseDiv);
     promiseIndex++;
   } else {
     promiseBox.innerHTML = "<p>All promises made! Click below to continue.</p>";
-    document.querySelector("#page4 button").innerText = "Next Surprise 💝";
+    document.querySelector("#page4 button").innerText = "On to the next surprise! 💝";
     document.querySelector("#page4 button").onclick = () => nextPage(5);
   }
 }
@@ -368,8 +356,8 @@ function createHeart() {
   heart.className = "heart";
   heart.innerHTML = "❤️";
   heart.style.left = Math.random()*100 + "vw";
-  heart.style.animationDuration = (Math.random()*2 + 3) + "s"; // Randomize speed
-  heart.style.fontSize = (Math.random()*15 + 20) + "px"; // Randomize size
+  heart.style.animationDuration = (Math.random()*2 + 3) + "s";
+  heart.style.fontSize = (Math.random()*15 + 20) + "px";
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(), parseFloat(heart.style.animationDuration) * 1000);
 }
@@ -412,7 +400,7 @@ startRecordBtn.addEventListener('click', async () => {
     mediaRecorder.start();
     startRecordBtn.style.display = 'none';
     stopRecordBtn.style.display = 'inline-block';
-    recordedAudio.style.display = 'none'; // Hide previous recording
+    recordedAudio.style.display = 'none';
     downloadRecordBtn.style.display = 'none';
 
     startTime = Date.now();
@@ -432,7 +420,7 @@ startRecordBtn.addEventListener('click', async () => {
 stopRecordBtn.addEventListener('click', () => {
   if (mediaRecorder && mediaRecorder.state === 'recording') {
     mediaRecorder.stop();
-    mediaRecorder.stream.getTracks().forEach(track => track.stop()); // Stop microphone access
+    mediaRecorder.stream.getTracks().forEach(track => track.stop());
     startRecordBtn.style.display = 'inline-block';
     stopRecordBtn.style.display = 'none';
   }
